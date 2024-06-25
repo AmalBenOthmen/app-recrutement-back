@@ -1,0 +1,45 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/app_recrutement
+    username: postgres
+    password: amal
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  mail:
+    host: localhost
+    port: 1025
+    username: coficab
+    password: coficab
+    properties:
+      mail:
+        smtp:
+          trust: "*"
+        auth: true
+        starttls:
+          enabled: true
+        connection timeout: 5000
+        timeout: 3000
+        write timeout: 5000
+application:
+  security:
+    jwt:
+      secret-key: 815972862c78d270e25d2ba6d1f035395b9808847aebb3ffa0b607c29f61de85b793b88ed13b8011357c89e4f1fd92de48fce4aaf63ccf1f6fb731cbb37012ec11f4b953450fa7f768cd0293184766939d6e23d127200cc465bbc9eaaecc3ce65ab496ec3b689dabe18a2d84102a9d2da1eee766a425b6093489252de1d8a03e96b325179adb6b1fc986f6223b8654b838509f79c7e8b9a3328dc6b497d7676e6997ea09d73a5cdc9b4d6416ec596a3293b0e4f5b7eadaed35ac1d08991496f83ac782ade4cb8cc0dcc166f93b4a3e6e9142df87ba4556dc8b4b8e21009546101698095a32bb8c0b8edc98619232305b4db7e37d1ffe5f5aa79964d5bea27035d6b29e2d06631b243f00abbed27a1c1d5fc961677278bf770e9c26b30c1529a412b85122a4cd984b743648e914696bbe6e8637b4e203e596dce98aba392809903f9125dcf9b266908df543f9485de418c336587fa3b963e90bbd4d6e92a501b82cc5dbb938829e96b1069f461e21705d61a09a57fb8d0ad070ae3b00ade0316719513d61b343e61e2a343c3302f3753674502c642856849546a1b906263a26b99a32bdc0ac19de15fd2a056f264a2ec3dc22f6098d70c8ce188f58f26b3d6066e46f971c2612be7398df6017fc6d38e3ba72d805b7469ac5be386cb133b592acea50ad5280b8420ab5153141b60e1feb10282652a860e4fbef45f91c2ab1ce27
+      expiration: 86400000 # a day
+        #refresh-token:
+      #      expiration: 604800000 # 7 days
+  mailing:
+    frontend:
+      activation-url: http://localhost:4200/activate-account
+    #file:
+    # uploads:
+    #  photos-output-path: ./uploads
+server:
+  port: 8088
