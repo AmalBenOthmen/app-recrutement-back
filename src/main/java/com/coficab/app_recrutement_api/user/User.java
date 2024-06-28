@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,7 +28,7 @@ import static jakarta.persistence.FetchType.EAGER;
 @Entity
 @Table(name = "_user")
 @EntityListeners(AuditingEntityListener.class)
-public class User  implements UserDetails, Principal {
+public class User implements UserDetails, Principal {
     @Id
     @GeneratedValue
     private Integer id;
@@ -41,8 +42,12 @@ public class User  implements UserDetails, Principal {
     private boolean enabled;
 
     @ManyToMany(fetch = EAGER)
-    private List<Role> roles;
-
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<Role> roles = new ArrayList<>(); // Initialize as mutable list
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -52,8 +57,6 @@ public class User  implements UserDetails, Principal {
     @Column(insertable = false)
     private LocalDateTime lastModifiedDate;
 
-
-
     @Override
     public String getName() {
         return email;
@@ -61,7 +64,7 @@ public class User  implements UserDetails, Principal {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return  this.roles
+        return this.roles
                 .stream()
                 .map(r -> new SimpleGrantedAuthority(r.getName()))
                 .collect(Collectors.toList());
@@ -96,6 +99,7 @@ public class User  implements UserDetails, Principal {
     public boolean isEnabled() {
         return enabled;
     }
+
     public String getFullName() {
         return firstname + " " + lastname;
     }

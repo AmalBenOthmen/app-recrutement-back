@@ -1,5 +1,6 @@
 package com.coficab.app_recrutement_api;
 
+import com.coficab.app_recrutement_api.role.ERole;
 import com.coficab.app_recrutement_api.role.Role;
 import com.coficab.app_recrutement_api.role.roleRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -22,8 +23,11 @@ public class AppRecrutementApiApplication {
 	@Bean
 	public CommandLineRunner runner(roleRepository roleRepository) {
 		return args -> {
-			if (roleRepository.findByName("USER").isEmpty()) {
-				roleRepository.save(Role.builder().name("USER").build());
+			if (roleRepository.findByName(ERole.USER.name()).isEmpty()) {
+				roleRepository.save(Role.builder().name(ERole.USER.name()).build());
+			}
+			if (roleRepository.findByName(ERole.ADMIN.name()).isEmpty()) {
+				roleRepository.save(Role.builder().name(ERole.ADMIN.name()).build());
 			}
 		};
 	}

@@ -44,7 +44,7 @@ public class BeansConfig {
         return new BCryptPasswordEncoder();
     }
 
- 
+
 
     @Bean
     public CorsFilter corsFilter() {

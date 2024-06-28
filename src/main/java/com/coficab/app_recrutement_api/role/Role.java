@@ -22,11 +22,13 @@ public class Role {
     @Id
     @GeneratedValue
     private Integer id;
+
     @Column(unique = true)
     private String name;
+
     @ManyToMany(mappedBy = "roles")
     @JsonIgnore
-    private List<User> user;
+    private List<User> users;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -36,4 +38,3 @@ public class Role {
     @Column(insertable = false)
     private LocalDateTime lastModifiedDate;
 }
-
