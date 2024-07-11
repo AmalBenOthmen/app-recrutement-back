@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
-@EnableJpaAuditing
+@EnableJpaAuditing(auditorAwareRef = "auditorAware")
 @EnableAsync
 @EnableJpaRepositories
 public class AppRecrutementApiApplication {
@@ -28,6 +28,7 @@ public class AppRecrutementApiApplication {
 			}
 			if (roleRepository.findByName(ERole.ADMIN.name()).isEmpty()) {
 				roleRepository.save(Role.builder().name(ERole.ADMIN.name()).build());
+
 			}
 		};
 	}

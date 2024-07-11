@@ -3,6 +3,7 @@ package com.coficab.app_recrutement_api.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,35 +27,34 @@ public class SecurityConfig {
     private final JwtFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 
-   @Bean
-   public SecurityFilterChain securityFilterChain(HttpSecurity http)throws Exception {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .cors(withDefaults())
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(req ->
+                        req.requestMatchers(
+                                        "/auth/**",
+                                        "/v2/api-docs",
+                                        "/v3/api-docs",
+                                        "/v3/api-docs/**",
+                                        "/swagger-resources",
+                                        "/swagger-resources/**",
+                                        "/configuration/ui",
+                                        "/configuration/security",
+                                        "/swagger-ui/**",
+                                        "/webjars/**",
+                                        "/swagger-ui.html"
+                                ).permitAll()
+                                .requestMatchers(HttpMethod.POST, "/job-posts").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/job-posts/{job-post-id}").hasAnyRole("USER", "ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/job-posts").hasAnyRole("USER", "ADMIN")
+                                .anyRequest().authenticated()
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-       http
-               .cors(withDefaults())
-               .csrf(AbstractHttpConfigurer::disable)
-               .authorizeHttpRequests(req ->
-                       req.requestMatchers(
-                                       "/auth/**",
-                                       "/v2/api-docs",
-                                       "/v3/api-docs",
-                                       "/v3/api-docs/**",
-                                       "/swagger-resources",
-                                       "/swagger-resources/**",
-                                       "/configuration/ui",
-                                       "/configuration/security",
-                                       "/swagger-ui/**",
-                                       "/webjars/**",
-                                       "/swagger-ui.html"
-                               )
-                               .permitAll()
-                               .anyRequest()
-                               .authenticated()
-               )
-               .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
-               .authenticationProvider(authenticationProvider)
-               .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
-       return http.build();
-   }
+        return http.build();
+    }
 }
-

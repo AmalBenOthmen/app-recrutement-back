@@ -40,11 +40,15 @@ public class BeansConfig {
     }
 
     @Bean
+
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-
+    @Bean
+    public AuditorAware<Integer> auditorAware() {
+        return new ApplicationAuditAware();
+    }
 
     @Bean
     public CorsFilter corsFilter() {
@@ -67,7 +71,5 @@ public class BeansConfig {
         ));
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
-
     }
-
 }

@@ -9,4 +9,5 @@ import lombok.Setter;
 @Builder
 public class AuthenticationResponse {
     public  String token;
+    public String role;
 }

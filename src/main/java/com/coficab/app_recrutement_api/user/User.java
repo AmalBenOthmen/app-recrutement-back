@@ -1,72 +1,55 @@
 package com.coficab.app_recrutement_api.user;
 
+import com.coficab.app_recrutement_api.common.BaseEntity;
+
+import com.coficab.app_recrutement_api.jobPost.JobPost;
 import com.coficab.app_recrutement_api.role.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.security.Principal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static jakarta.persistence.FetchType.EAGER;
-
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "_user")
-@EntityListeners(AuditingEntityListener.class)
-public class User implements UserDetails, Principal {
-    @Id
-    @GeneratedValue
-    private Integer id;
+@Table(name = "_user") // Adjust table name if necessary
+public class User extends BaseEntity implements UserDetails {
+
     private String firstname;
     private String lastname;
-    private LocalDate dateOfBirth;
     @Column(unique = true)
     private String email;
     private String password;
     private boolean accountLocked;
     private boolean enabled;
 
-    @ManyToMany(fetch = EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private List<Role> roles = new ArrayList<>(); // Initialize as mutable list
+    private List<Role> roles = new ArrayList<>();
 
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdDate;
-
-    @LastModifiedDate
-    @Column(insertable = false)
-    private LocalDateTime lastModifiedDate;
-
-    @Override
-    public String getName() {
-        return email;
-    }
+    @OneToMany(mappedBy = "createdBy")
+    @JsonIgnore
+    private List<JobPost> jobPosts;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles
-                .stream()
-                .map(r -> new SimpleGrantedAuthority(r.getName()))
+        return this.roles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
                 .collect(Collectors.toList());
     }
 
@@ -101,6 +84,6 @@ public class User implements UserDetails, Principal {
     }
 
     public String getFullName() {
-        return firstname + " " + lastname;
+        return getFirstname() + " " + getLastname();
     }
 }
