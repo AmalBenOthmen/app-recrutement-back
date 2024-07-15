@@ -35,6 +35,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(
                                         "/auth/**",
+                                        "/jobApplication/apply",
                                         "/v2/api-docs",
                                         "/v3/api-docs",
                                         "/v3/api-docs/**",
@@ -49,6 +50,8 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/job-posts").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/job-posts/{job-post-id}").hasAnyRole("USER", "ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/job-posts").hasAnyRole("USER", "ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/jobApplication/jobPost/{jobPostId}").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/job-posts/{job-post-id}/applications").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))

@@ -69,7 +69,12 @@ public class BeansConfig {
                 "PUT",
                 "PATCH"
         ));
+
         source.registerCorsConfiguration("/**", config);
+
+        // Log to confirm CORS configuration is being applied
+        System.out.println("CORS Filter Applied: " + config);
+
         return new CorsFilter(source);
     }
-}
+    }

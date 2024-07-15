@@ -1,5 +1,7 @@
 package com.coficab.app_recrutement_api.jobPost;
 
+import com.coficab.app_recrutement_api.jobApplicationForm.JobApplicationForm;
+import com.coficab.app_recrutement_api.jobApplicationForm.JobApplicationFormResponse;
 import com.coficab.app_recrutement_api.user.User;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -26,7 +28,7 @@ public class JobPostController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Integer> saveJobPost(
+    public ResponseEntity<Long> saveJobPost(
             @Valid @RequestBody JobPostRequest request,
             Authentication connectedUser
     ) {
@@ -35,7 +37,7 @@ public class JobPostController {
 
     @GetMapping("/{job-post-id}")
     public ResponseEntity<JobPostResponse> findJobPostById(
-            @PathVariable("job-post-id") Integer jobPostId
+            @PathVariable("job-post-id") Long jobPostId
     ) {
         return ResponseEntity.ok(service.findById(jobPostId));
     }
@@ -47,5 +49,12 @@ public class JobPostController {
 
         // No need to log the token here as it's handled by the filter
         return ResponseEntity.ok(service.findAllJobPosts());
+    }
+    @GetMapping("/{job-post-id}/applications")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<JobApplicationFormResponse>> findJobApplicationsForJobPost(
+            @PathVariable("job-post-id") Long jobPostId
+    ) {
+        return ResponseEntity.ok(service.findJobApplicationsForJobPost(jobPostId));
     }
 }

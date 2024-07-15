@@ -1,14 +1,13 @@
 package com.coficab.app_recrutement_api.jobPost;
 
+import com.coficab.app_recrutement_api.jobApplicationForm.JobApplicationForm;
 import com.coficab.app_recrutement_api.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
-
-
-
+import java.util.List;
 
 
 @Entity
@@ -21,7 +20,7 @@ import java.util.Date;
 public class JobPost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(nullable = false)
     private String title;
@@ -41,6 +40,9 @@ public class JobPost {
     @ManyToOne
     @JoinColumn(name = "created_by", nullable = false)
     private User createdBy;
+
+    @OneToMany(mappedBy = "jobPost", cascade = CascadeType.ALL)
+    private List<JobApplicationForm> jobApplications;
 
     @Column(nullable = false)
     private LocalDateTime createdDate;

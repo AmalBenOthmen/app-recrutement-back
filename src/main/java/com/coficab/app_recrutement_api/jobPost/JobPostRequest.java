@@ -12,7 +12,7 @@ import java.util.Date;
 
 
 public record JobPostRequest(
-        Integer id,
+        Long id,
         @NotNull(message = "Title is required")
         @NotEmpty(message = "Title is required")
         String title,
