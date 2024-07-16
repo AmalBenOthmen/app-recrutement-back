@@ -38,10 +38,12 @@ public class JobApplicationService {
         if (!uploadDirFile.exists()) {
             uploadDirFile.mkdirs();
         }
-        String filePath = uploadDir + "/" + file.getOriginalFilename();
+        String fileName = file.getOriginalFilename();
+        String filePath = uploadDir + "/" + fileName;
         file.transferTo(new File(filePath));
-        return filePath;
+        return fileName; // Return only the file name
     }
+
 
     public void sendEmailNotification(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();

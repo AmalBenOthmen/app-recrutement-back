@@ -1,6 +1,5 @@
 package com.coficab.app_recrutement_api.jobPost;
 
-import com.coficab.app_recrutement_api.jobApplicationForm.JobApplicationForm;
 import com.coficab.app_recrutement_api.jobApplicationForm.JobApplicationFormResponse;
 import com.coficab.app_recrutement_api.user.User;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -8,14 +7,20 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
-
 
 @RestController
 @RequestMapping("/job-posts")
@@ -47,14 +52,48 @@ public class JobPostController {
         User user = (User) authentication.getPrincipal();
         log.info("User Roles: {}", user.getAuthorities());
 
-        // No need to log the token here as it's handled by the filter
         return ResponseEntity.ok(service.findAllJobPosts());
     }
+
     @GetMapping("/{job-post-id}/applications")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<JobApplicationFormResponse>> findJobApplicationsForJobPost(
             @PathVariable("job-post-id") Long jobPostId
     ) {
         return ResponseEntity.ok(service.findJobApplicationsForJobPost(jobPostId));
+    }
+
+    @GetMapping("/cv/{fileName:.+}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Resource> downloadCV(@PathVariable String fileName, Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        log.info("User Roles: {}", user.getAuthorities());
+        Path filePath = Paths.get("C:\\Users\\lenovo\\Desktop\\app recrutement\\uploads\\cv").resolve(fileName).normalize();
+        return downloadFile(filePath);
+    }
+
+    @GetMapping("/additionalDocuments/{fileName:.+}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Resource> downloadAdditionalDocuments(@PathVariable String fileName, Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        log.info("User Roles: {}", user.getAuthorities());
+        Path filePath = Paths.get("C:\\Users\\lenovo\\Desktop\\app recrutement\\uploads\\additionalDocuments").resolve(fileName).normalize();
+        return downloadFile(filePath);
+    }
+
+    private ResponseEntity<Resource> downloadFile(Path filePath) {
+        try {
+            Resource resource = new UrlResource(filePath.toUri());
+            if (resource.exists() && resource.isReadable()) {
+                return ResponseEntity.ok()
+                        .contentType(MediaType.APPLICATION_PDF)
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+                        .body(resource);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (IOException ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }

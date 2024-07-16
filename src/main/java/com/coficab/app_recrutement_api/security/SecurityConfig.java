@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
@@ -45,13 +46,18 @@ public class SecurityConfig {
                                         "/configuration/security",
                                         "/swagger-ui/**",
                                         "/webjars/**",
-                                        "/swagger-ui.html"
+                                        "/swagger-ui.html",
+
+                                        "/files/**"
                                 ).permitAll()
                                 .requestMatchers(HttpMethod.POST, "/job-posts").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/job-posts/{job-post-id}").hasAnyRole("USER", "ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/job-posts").hasAnyRole("USER", "ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/jobApplication/jobPost/{jobPostId}").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/job-posts/{job-post-id}/applications").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/job-posts/cv/{fileName:.+}").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/job-posts/additionalDocuments/{fileName:.+}").hasRole("ADMIN")
+
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
