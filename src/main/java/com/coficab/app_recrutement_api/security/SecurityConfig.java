@@ -60,6 +60,9 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/favorite-application-form-list/add").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/favorite-application-form-list/remove").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/favorite-application-form-list/list").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/messages/send").hasRole("USER")
+                                .requestMatchers(HttpMethod.GET, "/messages/unread").hasRole("ADMIN")
+
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
