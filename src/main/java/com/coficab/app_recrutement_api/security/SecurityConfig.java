@@ -57,7 +57,9 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/job-posts/{job-post-id}/applications").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/job-posts/cv/{fileName:.+}").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/job-posts/additionalDocuments/{fileName:.+}").hasRole("ADMIN")
-
+                                .requestMatchers(HttpMethod.POST, "/favorite-application-form-list/add").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/favorite-application-form-list/remove").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/favorite-application-form-list/list").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
