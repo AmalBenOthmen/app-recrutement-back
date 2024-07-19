@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -30,6 +32,10 @@ public class Message {
     private String message;
 
     private boolean isRead;
+
+
+    @Column(name = "sent_date", nullable = false)
+    private LocalDateTime sentDate;
 
 
 }
