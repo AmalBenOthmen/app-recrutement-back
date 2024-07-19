@@ -17,10 +17,18 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(length = 500)
     private String name;
+
+    @Column(length = 500)
     private String email;
+
+    @Column(length = 500)
     private String subject;
+
+    @Column(columnDefinition = "TEXT")
     private String message;
+
     private boolean isRead;
 
 

@@ -62,6 +62,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/favorite-application-form-list/list").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/messages/send").hasRole("USER")
                                 .requestMatchers(HttpMethod.GET, "/messages/unread").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/messages//{id}/read").hasRole("ADMIN")
 
                                 .anyRequest().authenticated()
                 )
