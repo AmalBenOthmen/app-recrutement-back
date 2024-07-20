@@ -96,4 +96,8 @@ public class JobPostController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+    @GetMapping("/count-by-title")
+    public List<Object[]> countJobPostsByTitle() {
+        return service.countJobPostsByTitle();
+    }
 }

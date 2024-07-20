@@ -51,4 +51,7 @@ public class JobPostService {
                 .map(jobApplicationFormMapper::toJobApplicationFormResponse)
                 .collect(Collectors.toList());
     }
+    public List<Object[]> countJobPostsByTitle() {
+        return jobPostRepository.countJobPostsByTitle();
+    }
 }

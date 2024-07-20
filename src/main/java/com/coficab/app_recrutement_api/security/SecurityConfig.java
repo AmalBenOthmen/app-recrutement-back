@@ -47,6 +47,7 @@ public class SecurityConfig {
                                         "/swagger-ui/**",
                                         "/webjars/**",
                                         "/swagger-ui.html",
+                                        "/api/v1/job-posts/count-by-title",
 
                                         "/files/**"
                                 ).permitAll()

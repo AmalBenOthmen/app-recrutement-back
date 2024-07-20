@@ -15,5 +15,10 @@ public interface JobPostRepository extends JpaRepository<JobPost, Long>, JpaSpec
             FROM JobPost jobPost
             """)
     List<JobPost> findAllJobPosts();
+
+    @Query
+            ("SELECT jp.title, COUNT(jp) FROM JobPost jp GROUP BY jp.title")
+    List<Object[]> countJobPostsByTitle();
+
 }
 
