@@ -9,6 +9,8 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Transactional
 public class JobPostService {
+    private static final Logger logger = LoggerFactory.getLogger(JobPostService.class);
 
     private final JobPostRepository jobPostRepository;
     private final JobPostMapper jobPostMapper;
@@ -51,7 +54,17 @@ public class JobPostService {
                 .map(jobApplicationFormMapper::toJobApplicationFormResponse)
                 .collect(Collectors.toList());
     }
+
     public List<Object[]> countJobPostsByTitle() {
         return jobPostRepository.countJobPostsByTitle();
+    }
+
+
+
+    public List<JobPostResponse> getJobPostByTitle(String title) {
+        return jobPostRepository.findAllByTitleContaining(title)
+                .stream()
+                .map(jobPostMapper::toJobPostResponse)
+                .collect(Collectors.toList());
     }
 }

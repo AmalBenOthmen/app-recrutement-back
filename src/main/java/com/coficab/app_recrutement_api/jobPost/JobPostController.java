@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/job-posts")
@@ -96,8 +97,19 @@ public class JobPostController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
     @GetMapping("/count-by-title")
     public List<Object[]> countJobPostsByTitle() {
         return service.countJobPostsByTitle();
     }
+
+    @GetMapping("/jobPost/{Title}")
+    public ResponseEntity<List<JobPostResponse>> getJobPostByTitle(@PathVariable String Title) {
+        List<JobPostResponse> jobPostsList = service.getJobPostByTitle(Title);
+        if (jobPostsList == null || jobPostsList.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(jobPostsList);
+    }
+
 }
