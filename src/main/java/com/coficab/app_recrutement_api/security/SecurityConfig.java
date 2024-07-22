@@ -66,7 +66,9 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/messages/unread").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/messages/{id}/read").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/messages/all").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.GET,"/users/admin/ ").hasRole(("ADMIN"))
+                                .requestMatchers(HttpMethod.GET,"/users/admin/profile ").hasRole(("ADMIN"))
+                                .requestMatchers(HttpMethod.PUT,"/users/admin/editProfile ").hasRole(("ADMIN"))
+
 
                                 .anyRequest().authenticated()
                 )

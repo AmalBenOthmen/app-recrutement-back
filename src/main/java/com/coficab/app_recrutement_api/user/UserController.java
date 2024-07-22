@@ -2,9 +2,7 @@ package com.coficab.app_recrutement_api.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -27,4 +25,19 @@ public class UserController {
                 user.getEmail()
         );
         return ResponseEntity.ok(userProfileDTO);
-    }}
+    }
+    @PutMapping("/admin/editProfile")
+    public ResponseEntity<UserProfileDTO> updateUserProfile(Principal principal, @RequestBody UserProfileDTO userProfileDTO) {
+        String email = principal.getName();
+        User updatedUser = userService.updateUser(email, userProfileDTO);
+        UserProfileDTO updatedProfileDTO = new UserProfileDTO(
+                updatedUser.getCreatedDate(),
+                updatedUser.getLastModifiedDate(),
+                updatedUser.getFirstname(),
+                updatedUser.getLastname(),
+                updatedUser.getEmail()
+        );
+        return ResponseEntity.ok(updatedProfileDTO);
+    }
+}
+

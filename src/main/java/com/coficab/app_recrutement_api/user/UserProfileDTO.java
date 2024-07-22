@@ -14,6 +14,7 @@ public class UserProfileDTO {
     private String firstname;
     private String lastname;
     private String email;
+    private String password;
 
     public UserProfileDTO(LocalDateTime createdDate, LocalDateTime lastModifiedDate, String firstname, String lastname, String email) {
         this.createdDate = createdDate;
@@ -22,5 +23,6 @@ public class UserProfileDTO {
         this.lastname = lastname;
         this.email = email;
     }
+    public UserProfileDTO() {}
 
 }
