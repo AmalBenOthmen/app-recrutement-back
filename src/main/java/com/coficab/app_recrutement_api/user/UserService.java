@@ -30,14 +30,21 @@ public class UserService {
 
     public User updateUser(String email, UserProfileDTO userProfileDTO) {
         User user = findByEmail(email);
-        user.setFirstname(userProfileDTO.getFirstname());
-        user.setLastname(userProfileDTO.getLastname());
-        user.setEmail(userProfileDTO.getEmail());
+        if (userProfileDTO.getFirstname() != null && !userProfileDTO.getFirstname().isEmpty()) {
+            user.setFirstname(userProfileDTO.getFirstname());
+        }
+        if (userProfileDTO.getLastname() != null && !userProfileDTO.getLastname().isEmpty()) {
+            user.setLastname(userProfileDTO.getLastname());
+        }
+        if (userProfileDTO.getEmail() != null && !userProfileDTO.getEmail().isEmpty()) {
+            user.setEmail(userProfileDTO.getEmail());
+        }
         if (userProfileDTO.getPassword() != null && !userProfileDTO.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(userProfileDTO.getPassword()));
         }
         return userRepository.save(user);
     }
+
     public long countUsersByRoleUser() {
         return userRepository.countUsersByRoleUser();
     }

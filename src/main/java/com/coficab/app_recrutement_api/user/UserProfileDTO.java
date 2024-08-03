@@ -9,19 +9,18 @@ import java.time.LocalDateTime;
 @Setter
 public class UserProfileDTO {
 
-    private LocalDateTime createdDate;
-    private LocalDateTime lastModifiedDate;
+
     private String firstname;
     private String lastname;
     private String email;
     private String password;
 
-    public UserProfileDTO(LocalDateTime createdDate, LocalDateTime lastModifiedDate, String firstname, String lastname, String email) {
-        this.createdDate = createdDate;
-        this.lastModifiedDate = lastModifiedDate;
+    public UserProfileDTO( String firstname, String lastname, String email,String password) {
+
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
+        this.password=password;
     }
     public UserProfileDTO() {}
 
