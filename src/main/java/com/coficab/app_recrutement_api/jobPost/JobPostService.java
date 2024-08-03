@@ -67,4 +67,18 @@ public class JobPostService {
                 .map(jobPostMapper::toJobPostResponse)
                 .collect(Collectors.toList());
     }
+    public JobPostResponse update(Long jobPostId, JobPostRequest request, Authentication connectedUser) {
+        User user = (User) connectedUser.getPrincipal();
+        JobPost existingJobPost = jobPostRepository.findById(jobPostId)
+                .orElseThrow(() -> new EntityNotFoundException("No job post found with ID:: " + jobPostId));
+        jobPostMapper.updateJobPostFromRequest(request, existingJobPost, user);
+        return jobPostMapper.toJobPostResponse(jobPostRepository.save(existingJobPost));
+    }
+    public void delete(Long jobPostId) {
+        if (!jobPostRepository.existsById(jobPostId)) {
+            throw new EntityNotFoundException("No job post found with ID:: " + jobPostId);
+        }
+        jobPostRepository.deleteById(jobPostId);
+    }
+
 }

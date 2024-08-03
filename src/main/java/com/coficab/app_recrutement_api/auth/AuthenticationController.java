@@ -35,4 +35,9 @@ public class AuthenticationController {
     ) throws MessagingException {
         service.activateAccount(token);
     }
+    @DeleteMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestParam String token) {
+        service.logout(token);
+        return ResponseEntity.noContent().build();
+    }
 }

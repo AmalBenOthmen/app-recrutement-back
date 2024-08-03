@@ -32,4 +32,13 @@ public class JobPostMapper {
                 .dateLine(jobPost.getDateLine())
                 .build();
     }
+    public void updateJobPostFromRequest(JobPostRequest request, JobPost existingJobPost, User user) {
+        existingJobPost.setTitle(request.title());
+        existingJobPost.setDescription(request.description());
+        existingJobPost.setResponsibilities(request.responsibilities());
+        existingJobPost.setRequirementsANDskills(request.requirementsANDskills());
+        existingJobPost.setDateLine(request.dateLine());
+        existingJobPost.setLastModifiedDate(LocalDateTime.now());
+
+    }
 }

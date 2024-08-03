@@ -160,4 +160,9 @@ public class AuthenticationService {
 
         return codeBuilder.toString();
     }
+    @Transactional
+    public void logout(String token) {
+        // Invalidate the token in the database or cache
+        tokenRepository.deleteByToken(token);
+    }
 }

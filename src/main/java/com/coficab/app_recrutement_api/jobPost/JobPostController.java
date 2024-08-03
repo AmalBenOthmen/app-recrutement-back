@@ -111,5 +111,21 @@ public class JobPostController {
         }
         return ResponseEntity.ok(jobPostsList);
     }
+    @PutMapping("/update/{job-post-id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<JobPostResponse> updateJobPost(
+            @PathVariable("job-post-id") Long jobPostId,
+            @Valid @RequestBody JobPostRequest request,
+            Authentication connectedUser
+    ) {
+        return ResponseEntity.ok(service.update(jobPostId, request, connectedUser));
+    }
+    @DeleteMapping("/delete/{job-post-id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteJobPost(@PathVariable("job-post-id") Long jobPostId) {
+        service.delete(jobPostId);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }

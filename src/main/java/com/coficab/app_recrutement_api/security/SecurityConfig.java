@@ -58,9 +58,12 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/jobApplication/jobPost/{jobPostId}").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/job-posts/{job-post-id}/applications").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/job-posts/cv/{fileName:.+}").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/job-posts/update/{job-post-id}").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/job-posts/delete/{job-post-id}").hasRole("ADMIN")
+
                                 .requestMatchers(HttpMethod.GET, "/job-posts/additionalDocuments/{fileName:.+}").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/favorite-application-form-list/add").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.POST, "/favorite-application-form-list/remove").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/favorite-application-form-list/remove").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/favorite-application-form-list/list").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/messages/send").hasRole("USER")
                                 .requestMatchers(HttpMethod.GET, "/messages/unread").hasRole("ADMIN")
@@ -68,6 +71,18 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/messages/all").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET,"/users/admin/profile ").hasRole(("ADMIN"))
                                 .requestMatchers(HttpMethod.PUT,"/users/admin/editProfile ").hasRole(("ADMIN"))
+                                .requestMatchers(HttpMethod.PUT,"/users/admin/updatePhoto/{email} ").hasRole(("ADMIN"))
+                                .requestMatchers(HttpMethod.GET,"/api/v1/users/admin/user-count").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET,"/api/v1/users/admin/active-user-count").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/favorite-Job-Post-list/user/add").hasRole("USER")
+                                .requestMatchers(HttpMethod.DELETE, "/favorite-Job-Post-list/user/remove").hasRole("USER")
+                                .requestMatchers(HttpMethod.GET, "/favorite-Job-Post-list/user/list").hasRole("USER")
+                                .requestMatchers(HttpMethod.GET,"/api/v1/admin/notes/get-note").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST,"/api/v1/admin/notes/add-note").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE,"/api/v1/admin/notes/delete-note/{id}").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT,"/api/v1/admin/notes/update-note/{id}").hasRole("ADMIN")
+
+
 
 
                                 .anyRequest().authenticated()

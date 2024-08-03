@@ -1,5 +1,6 @@
 package com.coficab.app_recrutement_api.jobPost;
 
+import com.coficab.app_recrutement_api.favoriteJobPostList.FavoriteJobPostList;
 import com.coficab.app_recrutement_api.jobApplicationForm.JobApplicationForm;
 import com.coficab.app_recrutement_api.user.User;
 import jakarta.persistence.*;
@@ -49,4 +50,10 @@ public class JobPost {
 
     @Column(nullable = false)
     private LocalDateTime lastModifiedDate;
+
+
+    @OneToMany(mappedBy = "jobPost", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FavoriteJobPostList> favoriteJobPostList;
+
 }
+

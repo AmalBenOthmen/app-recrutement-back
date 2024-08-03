@@ -36,7 +36,9 @@ public class User extends BaseEntity implements UserDetails {
     private String password;
     private boolean accountLocked;
     private boolean enabled;
-
+    // if you decide to use Base64 strings
+    @Setter
+    private String photo;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",
@@ -92,4 +94,5 @@ public class User extends BaseEntity implements UserDetails {
     public String getFullName() {
         return getFirstname() + " " + getLastname();
     }
+
 }
