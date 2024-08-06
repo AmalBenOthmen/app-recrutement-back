@@ -35,6 +35,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(
+
                                         "/auth/**",
                                         "/jobApplication/apply",
                                         "/v2/api-docs",
@@ -48,10 +49,12 @@ public class SecurityConfig {
                                         "/webjars/**",
                                         "/swagger-ui.html",
                                         "/api/v1/job-posts/count-by-title",
-                                        "/api/v1/job-posts//jobPost/{Title}",
-
+                                        "/api/v1/job-posts/jobPost/{Title}",
                                         "/files/**"
+
                                 ).permitAll()
+
+
                                 .requestMatchers(HttpMethod.POST, "/job-posts").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/job-posts/{job-post-id}").hasAnyRole("USER", "ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/job-posts").hasAnyRole("USER", "ADMIN")
@@ -81,6 +84,8 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST,"/api/v1/admin/notes/add-note").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE,"/api/v1/admin/notes/delete-note/{id}").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT,"/api/v1/admin/notes/update-note/{id}").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT,"/api/v1/users/ModifierPhoto").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET,"/api/v1/users/photo/{filename}").hasRole("ADMIN")
 
 
 

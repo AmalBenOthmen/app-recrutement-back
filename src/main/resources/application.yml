@@ -1,14 +1,17 @@
+# application.yml
+
 spring:
   profiles:
-    active: dev
+    active: dev  # Définit le profil actif, généralement mis en place dans la configuration globale
+
   servlet:
     multipart:
       enabled: true
       max-file-size: 50MB
       max-request-size: 50MB
 
-springdoc:
-  default-produces-media-type: application/json
+  doc:
+    default-produces-media-type: application/json
 
 server:
   servlet:

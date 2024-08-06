@@ -37,8 +37,18 @@ public class User extends BaseEntity implements UserDetails {
     private boolean accountLocked;
     private boolean enabled;
     // if you decide to use Base64 strings
-    @Setter
+
+    @Column(name = "photo")
     private String photo;
+
+    // Getter et setter pour photoUrl
+    public String getPhotoUrl() {
+        return photo;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photo = photoUrl;
+    }
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",
@@ -70,6 +80,8 @@ public class User extends BaseEntity implements UserDetails {
     public String getUsername() {
         return email;
     }
+
+
 
     @Override
     public boolean isAccountNonExpired() {
