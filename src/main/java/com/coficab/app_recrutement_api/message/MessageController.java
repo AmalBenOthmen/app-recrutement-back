@@ -40,4 +40,10 @@ public class MessageController {
     public Message markAsRead(@PathVariable Integer id) {
         return messageService.markAsRead(id);
     }
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteMessage(@PathVariable Integer id) {
+        messageService.deleteMessage(id);
+    }
+
 }

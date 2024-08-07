@@ -25,5 +25,12 @@ public class MessageService {
 
     public List<Message> getAllMessages() {
         return messageRepository.findAll();
+
     }
+    public void deleteMessage(Integer id) {
+        Message message = messageRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Message not found"));
+        messageRepository.delete(message);
+    }
+
 }
